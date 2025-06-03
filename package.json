@@ -9,7 +9,8 @@
     "format": "prettier --config .prettierrc --write \"**/*.{js,jsx,ts,tsx,json,astro}\"",
     "format:diff": "prettier --config .prettierrc --list-different \"**/*.{js,jsx,ts,tsx,json,astro}\"",
     "changeset": "changeset",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "prepare": "husky install"
   },
   "keywords": [
     "github",
@@ -47,6 +48,7 @@
     "@types/mustache": "^4.2.6",
     "@types/node": "^20.12.0",
     "@vercel/ncc": "^0.38.1",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "ts-jest": "^29.1.0",
     "typescript": "^5.4.5",
