@@ -1,0 +1,41 @@
+name: 'EventCatalog Governance Action'
+description: 'A GitHub Action to enforce EventCatalog governance.'
+author: 'EventCatalog'
+
+inputs:
+  task:
+    description: 'The task to perform. Default is "schema_review".'
+    required: false
+    default: 'schema_review'
+  github_token:
+    description: 'GitHub token to interact with the GitHub API'
+    required: true
+  catalog_directory:
+    description: 'The directory where the EventCatalog files are located. If specified, the action will only consider files within this directory.'
+    required: false
+  api_key:
+    description: 'The API key for the model'
+    required: false
+  model:
+    description: 'The model to use for AI processing. Default is o4-mini.'
+    required: false
+    default: 'o4-mini'
+  provider:
+    description: 'The AI Provider to use for AI processing. Default is openai.'
+    required: false
+    default: 'openai'
+  failure_threshold:
+    description: 'The AI review score below which the action will fail. Default is 25.'
+    required: false
+    default: '25'
+  license_key:
+    description: 'The license key for the EventCatalog GitHub Action. You can get a 14 day free trial at https://eventcatalog.cloud/. If you do not have a license key, the action will fail.'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'archive' # Choose an icon from https://feathericons.com/
+  color: 'blue'   # Choose a color 

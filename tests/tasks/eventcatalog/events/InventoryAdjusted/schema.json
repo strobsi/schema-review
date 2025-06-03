@@ -1,0 +1,12 @@
+{
+  "name": "InventoryAdjusted",
+  "description": "This is a test event",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "inventory": {
+        "type": "number"
+      }
+    }
+  }
+}
