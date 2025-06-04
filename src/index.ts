@@ -22,7 +22,9 @@ async function run(): Promise<void> {
         issue_number: context.payload.pull_request!.number,
         body: 'Invalid license key for EventCatalog GitHub Action, please check your license key or get a 14 day free trial at https://eventcatalog.cloud/.',
       });
-      core.setFailed('Invalid license key for EventCatalog GitHub Action, please check your license key or get a 14 day free trial at https://eventcatalog.cloud/.');
+      core.setFailed(
+        'Invalid license key for EventCatalog GitHub Action, please check your license key or get a 14 day free trial at https://eventcatalog.cloud/.'
+      );
       return;
     }
 
