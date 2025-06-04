@@ -70831,7 +70831,7 @@ const task = async ({ octokit, context, catalogDirectory }) => {
     // Review all the schemas, the new schema vs the old one
     for (const filePath of changedSchemasInPullRequest) {
         core.info(`Reviewing schema: ${filePath}`);
-        core.info(`Consumers: ${consumers.map((c) => c.name).join(', ')}`);
+        core.info(`Consumers: ${consumers.map((c) => `${c.name} (${c.version})`).join(', ')}`);
         const reviewedFileEntry = await (0, review_1.reviewSchema)(octokit, context, filePath, consumers);
         reviewedFiles.push(reviewedFileEntry);
     }

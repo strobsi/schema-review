@@ -65,7 +65,7 @@ export const task = async ({ octokit, context, catalogDirectory }: TaskParams) =
   // Review all the schemas, the new schema vs the old one
   for (const filePath of changedSchemasInPullRequest) {
     core.info(`Reviewing schema: ${filePath}`);
-    core.info(`Consumers: ${consumers.map((c) => c.name).join(', ')}`);
+    core.info(`Consumers: ${consumers.map((c) => `${c.name} (${c.version})`).join(', ')}`);
     const reviewedFileEntry = await reviewSchema(octokit, context, filePath, consumers);
     reviewedFiles.push(reviewedFileEntry);
   }
