@@ -29,6 +29,11 @@ The following schemas were modified in this pull request:
 {{/aiReview.effectedConsumers}}
 {{/reviewedFiles}}
 
+{{^aiReview.effectedConsumers}}
+### Potential Effected Consumers
+No consumers for this message were found in EventCatalog.
+{{/aiReview.effectedConsumers}}
+
 <sub>Using Model: {{model}} | Provider: {{provider}}</sub>
 ${COMMENT_MARKER}`;
 
