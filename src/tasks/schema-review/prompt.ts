@@ -22,7 +22,8 @@ Provide a detailed assessment covering the following aspects:
 - Specific breaking changes, if any.
 - Adherence to EDA best practices and the provided rules.
 - Potential risks and considerations for downstream systems.
-- If the changes are breaking, provide a list of consumers that MAY be affected by the changes with a warning message to the team about the consumer (service). And how this can effect them.
+- If the changes are breaking, and if you have a list of consumers, provide a list of consumers that MAY be affected by the changes with a warning message to the team about the consumer (service). And how this can effect them.
+- If you have no list of consumers, do not return any consumer information.
 
 Format your response as a JSON object with the following keys:
 - "executiveSummary": A concise (2-3 sentences) overview of the most critical findings and the overall risk/impact. This should be suitable for quick ingestion by stakeholders.
@@ -43,8 +44,10 @@ New schema:
 ${newSchema}
 \`\`\`
 
+${consumers.length > 0 ? `
 The consumers (effectedConsumers) of the messages are:
 ${consumers.map((consumer) => `- ${consumer.name} (${consumer.version})`).join('\n')}
+` : 'The schema does not have any consumers mapped in EventCatalog. Do not return any consumer information.'}
 `;
 
 export const responseSchema = z.object({
