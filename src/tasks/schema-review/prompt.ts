@@ -44,10 +44,14 @@ New schema:
 ${newSchema}
 \`\`\`
 
-${consumers.length > 0 ? `
+${
+  consumers.length > 0
+    ? `
 The consumers (effectedConsumers) of the messages are:
 ${consumers.map((consumer) => `- ${consumer.name} (${consumer.version})`).join('\n')}
-` : 'The schema does not have any consumers mapped in EventCatalog. Do not return any consumer information.'}
+`
+    : 'The schema does not have any consumers mapped in EventCatalog. Do not return any consumer information.'
+}
 `;
 
 export const responseSchema = z.object({
