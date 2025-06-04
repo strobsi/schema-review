@@ -20,17 +20,18 @@ The following schemas were modified in this pull request:
 
 {{aiReview.executiveSummary}}
 
-{{#aiReview.effectedConsumers}}
+{{#hasEffectedConsumers}}
 ### Potential Effected Consumers
 
 {{#aiReview.effectedConsumers}}
 - {{name}} ({{version}}) - {{warning}}
 {{/aiReview.effectedConsumers}}
-{{/aiReview.effectedConsumers}}
-{{^aiReview.effectedConsumers}}
+{{/hasEffectedConsumers}}
+{{^hasEffectedConsumers}}
 ### Potential Effected Consumers
-{{{name}}} ({{{version}}}) has no consumers mapped in EventCatalog.
-{{/aiReview.effectedConsumers}}
+
+{{name}} ({{version}}) has no consumers mapped in EventCatalog.
+{{/hasEffectedConsumers}}
 {{/reviewedFiles}}
 
 <sub>Using Model: {{model}} | Provider: {{provider}}</sub>
@@ -53,7 +54,6 @@ export const generateGitHubCommentForSchemaReview = async ({
   const catalogFolderName = getInput('catalog_directory');
 
   const getScorePrefix = (score: number) => {
-    console.log('score', score);
     if (score < 50) {
       return '🚨 Danger';
     } else if (score < 80) {
@@ -79,6 +79,7 @@ export const generateGitHubCommentForSchemaReview = async ({
     ...file,
     scorePrefix: getScorePrefix(file.aiReview?.score || 100),
     fileDiffLink: `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${context.payload.pull_request?.number}/files#${encodeURIComponent(file.filePath)}`,
+    hasEffectedConsumers: (file.aiReview?.effectedConsumers?.length || 0) > 0,
   }));
 
   const commentBody = mustache.render(TEMPLATE, {

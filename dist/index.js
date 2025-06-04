@@ -70493,13 +70493,11 @@ async function getChangedFilesInCatalogDirectory(octokit, context, catalogDirect
         pull_number: context.payload.pull_request.number,
     });
     let changedFiles = files.map((file) => file.filename);
-    console.log('Pull request has changed files', changedFiles);
     if (catalogDirectory) {
         core.info(`Filtering changed files for directory: ${catalogDirectory}`);
         // The path is inside the catalogDirectory somewhere
         changedFiles = changedFiles.filter((file) => containsDirectory(file, catalogDirectory));
     }
-    console.log('Changed files after filtering', changedFiles);
     return changedFiles;
 }
 async function upsertComment(octokit, context, pullRequestNumber, commentBody, commentMarker) {
@@ -70685,17 +70683,18 @@ The following schemas were modified in this pull request:
 
 {{aiReview.executiveSummary}}
 
-{{#aiReview.effectedConsumers}}
+{{#hasEffectedConsumers}}
 ### Potential Effected Consumers
 
 {{#aiReview.effectedConsumers}}
 - {{name}} ({{version}}) - {{warning}}
 {{/aiReview.effectedConsumers}}
-{{/aiReview.effectedConsumers}}
-{{^aiReview.effectedConsumers}}
+{{/hasEffectedConsumers}}
+{{^hasEffectedConsumers}}
 ### Potential Effected Consumers
-{{{name}}} ({{{version}}}) has no consumers mapped in EventCatalog.
-{{/aiReview.effectedConsumers}}
+
+{{name}} ({{version}}) has no consumers mapped in EventCatalog.
+{{/hasEffectedConsumers}}
 {{/reviewedFiles}}
 
 <sub>Using Model: {{model}} | Provider: {{provider}}</sub>
@@ -70704,7 +70703,6 @@ const generateGitHubCommentForSchemaReview = async ({ context, reviewedFiles, mo
     const { getMessageBySchemaPath } = (0, sdk_1.default)(catalogDirectory);
     const catalogFolderName = (0, core_1.getInput)('catalog_directory');
     const getScorePrefix = (score) => {
-        console.log('score', score);
         if (score < 50) {
             return '🚨 Danger';
         }
@@ -70728,6 +70726,7 @@ const generateGitHubCommentForSchemaReview = async ({ context, reviewedFiles, mo
         ...file,
         scorePrefix: getScorePrefix(file.aiReview?.score || 100),
         fileDiffLink: `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${context.payload.pull_request?.number}/files#${encodeURIComponent(file.filePath)}`,
+        hasEffectedConsumers: (file.aiReview?.effectedConsumers?.length || 0) > 0,
     }));
     const commentBody = mustache_1.default.render(TEMPLATE, {
         reviewedFiles: data,

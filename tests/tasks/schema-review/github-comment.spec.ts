@@ -34,6 +34,11 @@ describe('generateGitHubCommentForSchemaReview', () => {
               version: '1.0.0',
               warning: 'Warning 1',
             },
+            {
+              name: 'Consumer 2',
+              version: '1.0.1',
+              warning: 'Warning 2',
+            },
           ],
           score: 100,
           schemaFormat: 'json',
@@ -47,8 +52,6 @@ describe('generateGitHubCommentForSchemaReview', () => {
       provider: 'openai',
       catalogDirectory: path.join(__dirname, '../eventcatalog'),
     });
-
-    console.log(commentBody);
 
     expect(commentBody.trim()).toEqual(`# EventCatalog: Schema Review
 
@@ -65,6 +68,7 @@ Executive summary
 ### Potential Effected Consumers
 
 - Consumer 1 (1.0.0) - Warning 1
+- Consumer 2 (1.0.1) - Warning 2
 
 <sub>Using Model: o4-mini | Provider: openai</sub>
 <!-- eventcatalog-schema-review-comment -->`);
@@ -92,8 +96,6 @@ Executive summary
       catalogDirectory: path.join(__dirname, '../eventcatalog'),
     });
 
-    console.log(commentBody);
-
     expect(commentBody.trim()).toEqual(`# EventCatalog: Schema Review
 
 The following schemas were modified in this pull request:
@@ -107,6 +109,7 @@ The following schemas were modified in this pull request:
 Executive summary
 
 ### Potential Effected Consumers
+
 Inventory adjusted (1.0.1) has no consumers mapped in EventCatalog.
 
 <sub>Using Model: o4-mini | Provider: openai</sub>

@@ -88,15 +88,11 @@ export async function getChangedFilesInCatalogDirectory(
 
   let changedFiles = files.map((file: OctokitFile) => file.filename);
 
-  console.log('Pull request has changed files', changedFiles);
-
   if (catalogDirectory) {
     core.info(`Filtering changed files for directory: ${catalogDirectory}`);
     // The path is inside the catalogDirectory somewhere
     changedFiles = changedFiles.filter((file: string) => containsDirectory(file, catalogDirectory));
   }
-
-  console.log('Changed files after filtering', changedFiles);
 
   return changedFiles;
 }
