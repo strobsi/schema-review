@@ -70691,12 +70691,11 @@ The following schemas were modified in this pull request:
 - {{name}} ({{version}}) - {{warning}}
 {{/aiReview.effectedConsumers}}
 {{/aiReview.effectedConsumers}}
-{{/reviewedFiles}}
-
 {{^aiReview.effectedConsumers}}
 ### Potential Effected Consumers
-No consumers for this message were found in EventCatalog.
+{{{name}}} ({{{version}}}) has no consumers mapped in EventCatalog.
 {{/aiReview.effectedConsumers}}
+{{/reviewedFiles}}
 
 <sub>Using Model: {{model}} | Provider: {{provider}}</sub>
 ${COMMENT_MARKER}`;
@@ -70909,10 +70908,12 @@ New schema:
 ${newSchema}
 \`\`\`
 
-${consumers.length > 0 ? `
+${consumers.length > 0
+    ? `
 The consumers (effectedConsumers) of the messages are:
 ${consumers.map((consumer) => `- ${consumer.name} (${consumer.version})`).join('\n')}
-` : 'The schema does not have any consumers mapped in EventCatalog. Do not return any consumer information.'}
+`
+    : 'The schema does not have any consumers mapped in EventCatalog. Do not return any consumer information.'}
 `;
 exports.getUserPromptForSchemaReview = getUserPromptForSchemaReview;
 exports.responseSchema = zod_1.z.object({
