@@ -27,8 +27,8 @@ importers:
         specifier: 'link:'
         version: 'link:'
       '@eventcatalog/sdk':
-        specifier: ^2.6.1
-        version: 2.6.1
+        specifier: ^2.6.2
+        version: 2.6.2
       ai:
         specifier: ^4.3.16
         version: 4.3.16(react@19.1.0)(zod@3.25.48)
@@ -514,8 +514,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@eventcatalog/sdk@2.6.1':
-    resolution: {integrity: sha512-rs+L0aNokdrVR0tNEVdQkVwdNjWi247WEGgOhCztfjXuJc9nl0PHvjDwd/t0i7L0/NaeeSDTxUWzzl3fQSA1wg==}
+  '@eventcatalog/sdk@2.6.2':
+    resolution: {integrity: sha512-Uix9n1xqMgFnTXKRf8Eb2jfiZBBY+YKMRK1XzV6hkIcufuEGagyq6hRaE8isUf5wwtUANu82EgjhQOsvGqP14w==}
 
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
@@ -2825,7 +2825,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
-  '@eventcatalog/sdk@2.6.1':
+  '@eventcatalog/sdk@2.6.2':
     dependencies:
       '@changesets/cli': 2.29.4
       fs-extra: 11.3.0
