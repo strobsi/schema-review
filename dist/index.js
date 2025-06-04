@@ -70824,26 +70824,23 @@ const task = async ({ octokit, context, catalogDirectory }) => {
         core.info('No schemas have changed, skipping schema review');
         return;
     }
-    let consumers = [];
-    try {
-        for (const filePath of changedSchemasInPullRequest) {
-            const relativeFilePath = filePath.replace(catalogFolderName, '');
-            const message = await getMessageBySchemaPath(relativeFilePath);
-            const { consumers: messageConsumers } = await getProducersAndConsumersForMessage(message.id, message.version);
-            consumers.push(...messageConsumers);
-        }
-    }
-    catch (error) {
-        core.setFailed(`Failed to get messages for schemas: ${error instanceof Error ? error.message : String(error)}`);
-        return;
-    }
     const reviewedFiles = [];
     // Review all the schemas, the new schema vs the old one
     for (const filePath of changedSchemasInPullRequest) {
-        core.info(`Reviewing schema: ${filePath}`);
-        core.info(`Consumers: ${consumers.map((c) => `${c.name} (${c.version})`).join(', ')}`);
-        const reviewedFileEntry = await (0, review_1.reviewSchema)(octokit, context, filePath, consumers);
-        reviewedFiles.push(reviewedFileEntry);
+        try {
+            core.info(`Reviewing schema: ${filePath}`);
+            const message = await getMessageBySchemaPath(filePath);
+            const { consumers = [] } = await getProducersAndConsumersForMessage(message.id, message.version);
+            core.info(`Message consumers: ${consumers.map((c) => `${c.name} (${c.version})`).join(', ')}`);
+            const schemaReviewResponse = await (0, review_1.reviewSchema)(octokit, context, filePath, consumers);
+            reviewedFiles.push(schemaReviewResponse);
+        }
+        catch (error) {
+            core.error(`Error reviewing schema: ${filePath}`);
+            core.error(error instanceof Error ? error.message : String(error));
+            core.setFailed(`Error reviewing schema: ${filePath}`);
+            return;
+        }
     }
     // Get the lowest score for any of the reviewed files, compare to the failure threshold
     const lowestScore = reviewedFiles.reduce((min, file) => Math.min(min, file.aiReview?.score || 100), 100);
