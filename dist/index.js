@@ -1,7 +1,7 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 1757:
+/***/ 4438:
 /***/ ((module) => {
 
 function webpackEmptyAsyncContext(req) {
@@ -15,7 +15,7 @@ function webpackEmptyAsyncContext(req) {
 }
 webpackEmptyAsyncContext.keys = () => ([]);
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 1757;
+webpackEmptyAsyncContext.id = 4438;
 module.exports = webpackEmptyAsyncContext;
 
 /***/ }),
@@ -11592,7 +11592,7 @@ function updateToolCallResult({
 
 /***/ }),
 
-/***/ 8945:
+/***/ 3898:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
@@ -12301,8 +12301,8 @@ var getMessageBySchemaPath = (directory) => async (path4, options) => {
     throw new Error(`Failed to retrieve message from ${pathToMessage} due to an unknown error.`);
   }
 };
-var getProducersAndConsumersForMessage = (directory) => async (id, version) => {
-  const services = await getServices(directory)({ latestOnly: true });
+var getProducersAndConsumersForMessage = (directory) => async (id, version, options) => {
+  const services = await getServices(directory)({ latestOnly: options?.latestOnly ?? true });
   const message = await getResource(directory, id, version, { type: "message" });
   const isMessageLatestVersion = await isLatestVersion(directory, id, version);
   if (!message) {
@@ -12313,7 +12313,12 @@ var getProducersAndConsumersForMessage = (directory) => async (id, version) => {
   for (const service of services) {
     const servicePublishesMessage = service.sends?.some((_message) => {
       if (_message.version) {
-        return _message.id === message.id && (0, import_semver3.satisfies)(message.version, _message.version);
+        const isServiceUsingSemverRange = (0, import_semver3.validRange)(_message.version);
+        if (isServiceUsingSemverRange) {
+          return _message.id === message.id && (0, import_semver3.satisfies)(message.version, _message.version);
+        } else {
+          return _message.id === message.id && message.version === _message.version;
+        }
       }
       if (isMessageLatestVersion && _message.id === message.id) {
         return true;
@@ -12322,7 +12327,12 @@ var getProducersAndConsumersForMessage = (directory) => async (id, version) => {
     });
     const serviceSubscribesToMessage = service.receives?.some((_message) => {
       if (_message.version) {
-        return _message.id === message.id && (0, import_semver3.satisfies)(message.version, _message.version);
+        const isServiceUsingSemverRange = (0, import_semver3.validRange)(_message.version);
+        if (isServiceUsingSemverRange) {
+          return _message.id === message.id && (0, import_semver3.satisfies)(message.version, _message.version);
+        } else {
+          return _message.id === message.id && message.version === _message.version;
+        }
       }
       if (isMessageLatestVersion && _message.id === message.id) {
         return true;
@@ -12509,7 +12519,7 @@ var filterCollection = (collection, options) => {
 var getEventCatalogConfigurationFile = (directory) => async () => {
   try {
     const path4 = (0, import_node_path12.join)(directory, "eventcatalog.config.js");
-    const configModule = await __nccwpck_require__(1757)(path4);
+    const configModule = await __nccwpck_require__(4438)(path4);
     return configModule.default;
   } catch (error) {
     console.error("Error getting event catalog configuration file", error);
@@ -70666,7 +70676,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateGitHubCommentForSchemaReview = void 0;
 const mustache_1 = __importDefault(__nccwpck_require__(4827));
-const sdk_1 = __importDefault(__nccwpck_require__(8945));
+const sdk_1 = __importDefault(__nccwpck_require__(3898));
 const core_1 = __nccwpck_require__(9999);
 const COMMENT_MARKER = '<!-- eventcatalog-schema-review-comment -->';
 const TEMPLATE = `
@@ -70785,7 +70795,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.task = void 0;
 const core = __importStar(__nccwpck_require__(9999));
-const sdk_1 = __importDefault(__nccwpck_require__(8945));
+const sdk_1 = __importDefault(__nccwpck_require__(3898));
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const github_1 = __nccwpck_require__(5006);
 const eventcatalog_1 = __nccwpck_require__(3078);
