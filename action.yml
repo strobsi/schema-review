@@ -28,9 +28,6 @@ inputs:
     description: 'The AI review score below which the action will fail. Default is 25.'
     required: false
     default: '25'
-  license_key:
-    description: 'The license key for the EventCatalog GitHub Action. You can get a 14 day free trial at https://eventcatalog.cloud/. If you do not have a license key, the action will fail.'
-    required: true
 
 runs:
   using: 'node20'

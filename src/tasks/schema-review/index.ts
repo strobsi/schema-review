@@ -83,7 +83,7 @@ export const task = async ({ octokit, context, catalogDirectory }: TaskParams) =
 
   core.setOutput(
     'comment-url',
-    `https://github.com/${owner}/${repo}/pull/${pullRequestNumber}#issuecomment-${newOrUpdatedCommentId}`
+    `https://git.t3.daimlertruck.com/${owner}/${repo}/pull/${pullRequestNumber}#issuecomment-${newOrUpdatedCommentId}`
   );
 
   if (lowestScore < failureThreshold) {

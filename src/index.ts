@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { getChangedFilesInCatalogDirectory } from '@/lib/github';
 import { VALID_TASKS, schemaReviewTask } from '@/tasks';
-import checkLicense from '@/license/check-license';
 
 async function run(): Promise<void> {
   try {
@@ -11,22 +10,6 @@ async function run(): Promise<void> {
     const context = github.context;
     const catalogDirectory = core.getInput('catalog_directory');
     const task = core.getInput('task');
-    const licenseKey = core.getInput('license_key');
-
-    try {
-      await checkLicense('@eventcatalog/eventcatalog-scale', licenseKey);
-    } catch (error) {
-      await octokit.rest.issues.createComment({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: context.payload.pull_request!.number,
-        body: 'Invalid license key for EventCatalog GitHub Action, please check your license key or get a 14 day free trial at https://eventcatalog.cloud/.',
-      });
-      core.setFailed(
-        'Invalid license key for EventCatalog GitHub Action, please check your license key or get a 14 day free trial at https://eventcatalog.cloud/.'
-      );
-      return;
-    }
 
     if (!VALID_TASKS.includes(task)) {
       core.setFailed(`Invalid input for \`task\`. Must be one of: ${VALID_TASKS.join(', ')}.`);

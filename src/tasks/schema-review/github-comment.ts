@@ -7,7 +7,7 @@ import { getInput } from '@actions/core';
 const COMMENT_MARKER = '<!-- eventcatalog-schema-review-comment -->';
 
 const TEMPLATE = `
-# EventCatalog: Schema Review
+# EYWA: Schema Review
 
 The following schemas were modified in this pull request:
 {{#reviewedFiles}}
@@ -30,7 +30,7 @@ The following schemas were modified in this pull request:
 {{^hasEffectedConsumers}}
 ### Potential Effected Consumers
 
-{{name}} ({{version}}) has no consumers mapped in EventCatalog.
+{{name}} ({{version}}) has no consumers mapped in EYWA.
 {{/hasEffectedConsumers}}
 {{/reviewedFiles}}
 
@@ -78,7 +78,7 @@ export const generateGitHubCommentForSchemaReview = async ({
   const data = messages.map((file) => ({
     ...file,
     scorePrefix: getScorePrefix(file.aiReview?.score || 100),
-    fileDiffLink: `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${context.payload.pull_request?.number}/files#${encodeURIComponent(file.filePath)}`,
+    fileDiffLink: `https://git.t3.daimlertruck.com/${context.repo.owner}/${context.repo.repo}/pull/${context.payload.pull_request?.number}/files#${encodeURIComponent(file.filePath)}`,
     hasEffectedConsumers: (file.aiReview?.effectedConsumers?.length || 0) > 0,
   }));
 
