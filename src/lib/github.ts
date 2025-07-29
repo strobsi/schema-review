@@ -80,6 +80,7 @@ export async function getChangedFilesInCatalogDirectory(
   context: Context,
   catalogDirectory: string | undefined
 ): Promise<string[]> {
+  core.info('Fetching changed files in the catalog directory...');
   const { data: files } = await octokit.rest.pulls.listFiles({
     owner: context.repo.owner,
     repo: context.repo.repo,
