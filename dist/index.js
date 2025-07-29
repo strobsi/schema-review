@@ -63653,11 +63653,15 @@ async function run() {
         core.info(`Catalog directory: ${catalogDirectory}`);
         const task = core.getInput('task');
         core.info(`Task to execute: ${task}`);
-        if (!tasks_1.VALID_TASKS.includes(task)) {
-            core.setFailed(`Invalid input for \`task\`. Must be one of: ${tasks_1.VALID_TASKS.join(', ')}.`);
-            return;
+        /*
+        if (!VALID_TASKS.includes(task)) {
+          core.setFailed(`Invalid input for \`task\`. Must be one of: ${VALID_TASKS.join(', ')}.`);
+          return;
         }
+        */
+        core.info(`Starting task: ${task}`);
         const changedFilesForCatalog = await (0, github_1.getChangedFilesInCatalogDirectory)(octokit, context, catalogDirectory || undefined);
+        core.info(`Changed files in catalog directory: ${changedFilesForCatalog.join(', ')}`);
         if (changedFilesForCatalog.length === 0) {
             core.info('No catalog files have changes, skipping all tasks in action.');
             return;
@@ -63865,17 +63869,21 @@ async function getFileContentAtRef(octokit, context, path, ref) {
  * @returns The changed files in the catalog directory
  */
 async function getChangedFilesInCatalogDirectory(octokit, context, catalogDirectory) {
+    core.info('Fetching changed files in the catalog directory...');
     const { data: files } = await octokit.rest.pulls.listFiles({
         owner: context.repo.owner,
         repo: context.repo.repo,
         pull_number: context.payload.pull_request.number,
     });
+    core.info(`Found ${files.length} changed files in the pull request.`);
     let changedFiles = files.map((file) => file.filename);
+    core.info(`Changed files: ${changedFiles.join(', ')}`);
     if (catalogDirectory) {
         core.info(`Filtering changed files for directory: ${catalogDirectory}`);
         // The path is inside the catalogDirectory somewhere
         changedFiles = changedFiles.filter((file) => containsDirectory(file, catalogDirectory));
     }
+    core.info(`Filtered changed files: ${changedFiles.join(', ')}`);
     return changedFiles;
 }
 async function upsertComment(octokit, context, pullRequestNumber, commentBody, commentMarker) {
