@@ -85,14 +85,17 @@ export async function getChangedFilesInCatalogDirectory(
     repo: context.repo.repo,
     pull_number: context.payload.pull_request!.number,
   });
+  core.info(`Found ${files.length} changed files in the pull request.`);
 
   let changedFiles = files.map((file: OctokitFile) => file.filename);
+  core.info(`Changed files: ${changedFiles.join(', ')}`);
 
   if (catalogDirectory) {
     core.info(`Filtering changed files for directory: ${catalogDirectory}`);
     // The path is inside the catalogDirectory somewhere
     changedFiles = changedFiles.filter((file: string) => containsDirectory(file, catalogDirectory));
   }
+  core.info(`Filtered changed files: ${changedFiles.join(', ')}`);
 
   return changedFiles;
 }
