@@ -10,7 +10,6 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(githubToken);
     core.info('Initialized Octokit with provided GitHub token.');
     const context = github.context;
-    core.info(`GitHub context: ${JSON.stringify(context, null, 2)}`);
     const catalogDirectory = core.getInput('catalog_directory');
     core.info(`Catalog directory: ${catalogDirectory}`);
     const task = core.getInput('task');

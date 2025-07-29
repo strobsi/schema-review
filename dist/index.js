@@ -63648,7 +63648,6 @@ async function run() {
         const octokit = github.getOctokit(githubToken);
         core.info('Initialized Octokit with provided GitHub token.');
         const context = github.context;
-        core.info(`GitHub context: ${JSON.stringify(context, null, 2)}`);
         const catalogDirectory = core.getInput('catalog_directory');
         core.info(`Catalog directory: ${catalogDirectory}`);
         const task = core.getInput('task');
@@ -63760,6 +63759,23 @@ async function sendPromptToModel(systemPrompt, promptText, schema) {
         throw new Error('Failed to get a valid structured response from the AI model.');
     }
 }
+
+
+/***/ }),
+
+/***/ 9060:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getSchemasFromFilePaths = void 0;
+const getSchemasFromFilePaths = (filePaths) => {
+    const schemaFilePattern = /(?:^|\/)(events|queries|commands|domains)\/[^/]+(?:\/versioned\/[^/]+)?\/[^/]+\.(?:json|ya?ml|proto|avsc|avro|thrift|xml)$/;
+    const filteredFilePaths = filePaths.filter((filePath) => schemaFilePattern.test(filePath));
+    return filteredFilePaths;
+};
+exports.getSchemasFromFilePaths = getSchemasFromFilePaths;
 
 
 /***/ }),
@@ -64062,6 +64078,7 @@ const core = __importStar(__nccwpck_require__(7484));
 const sdk_1 = __importDefault(__nccwpck_require__(5033));
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const github_1 = __nccwpck_require__(3848);
+const eventcatalog_1 = __nccwpck_require__(9060);
 const review_1 = __nccwpck_require__(1171);
 const github_comment_1 = __nccwpck_require__(3760);
 const COMMENT_MARKER = '<!-- eventcatalog-schema-review-comment -->';
@@ -64090,7 +64107,7 @@ const task = async ({ octokit, context, catalogDirectory }) => {
         return;
     }
     const changedEventCatalogFilesInPullRequest = await (0, github_1.getChangedFilesInCatalogDirectory)(octokit, context, catalogDirectory);
-    const changedSchemasInPullRequest = changedEventCatalogFilesInPullRequest;
+    const changedSchemasInPullRequest = (0, eventcatalog_1.getSchemasFromFilePaths)(changedEventCatalogFilesInPullRequest);
     if (changedSchemasInPullRequest.length === 0) {
         core.info('No schemas have changed, skipping schema review');
         //return;
