@@ -63764,23 +63764,6 @@ async function sendPromptToModel(systemPrompt, promptText, schema) {
 
 /***/ }),
 
-/***/ 9060:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getSchemasFromFilePaths = void 0;
-const getSchemasFromFilePaths = (filePaths) => {
-    const schemaFilePattern = /(?:^|\/)(events|queries|commands)\/[^/]+(?:\/versioned\/[^/]+)?\/[^/]+\.(?:json|ya?ml|proto|avsc|avro|thrift|xml)$/;
-    const filteredFilePaths = filePaths.filter((filePath) => schemaFilePattern.test(filePath));
-    return filteredFilePaths;
-};
-exports.getSchemasFromFilePaths = getSchemasFromFilePaths;
-
-
-/***/ }),
-
 /***/ 3848:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -64079,7 +64062,6 @@ const core = __importStar(__nccwpck_require__(7484));
 const sdk_1 = __importDefault(__nccwpck_require__(5033));
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const github_1 = __nccwpck_require__(3848);
-const eventcatalog_1 = __nccwpck_require__(9060);
 const review_1 = __nccwpck_require__(1171);
 const github_comment_1 = __nccwpck_require__(3760);
 const COMMENT_MARKER = '<!-- eventcatalog-schema-review-comment -->';
@@ -64108,10 +64090,10 @@ const task = async ({ octokit, context, catalogDirectory }) => {
         return;
     }
     const changedEventCatalogFilesInPullRequest = await (0, github_1.getChangedFilesInCatalogDirectory)(octokit, context, catalogDirectory);
-    const changedSchemasInPullRequest = (0, eventcatalog_1.getSchemasFromFilePaths)(changedEventCatalogFilesInPullRequest);
+    const changedSchemasInPullRequest = changedEventCatalogFilesInPullRequest;
     if (changedSchemasInPullRequest.length === 0) {
         core.info('No schemas have changed, skipping schema review');
-        return;
+        //return;
     }
     const reviewedFiles = [];
     // Review all the schemas, the new schema vs the old one

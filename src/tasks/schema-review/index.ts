@@ -45,11 +45,11 @@ export const task = async ({ octokit, context, catalogDirectory }: TaskParams) =
   }
 
   const changedEventCatalogFilesInPullRequest = await getChangedFilesInCatalogDirectory(octokit, context, catalogDirectory);
-  const changedSchemasInPullRequest = getSchemasFromFilePaths(changedEventCatalogFilesInPullRequest);
+  const changedSchemasInPullRequest = changedEventCatalogFilesInPullRequest;
 
   if (changedSchemasInPullRequest.length === 0) {
     core.info('No schemas have changed, skipping schema review');
-    return;
+    //return;
   }
 
   const reviewedFiles: ReviewedFile[] = [];
