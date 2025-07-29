@@ -63644,10 +63644,15 @@ const tasks_1 = __nccwpck_require__(3790);
 async function run() {
     try {
         const githubToken = core.getInput('github_token', { required: true });
+        core.info(`GitHub token: ${githubToken}`);
         const octokit = github.getOctokit(githubToken);
+        core.info('Initialized Octokit with provided GitHub token.');
         const context = github.context;
+        core.info(`GitHub context: ${JSON.stringify(context, null, 2)}`);
         const catalogDirectory = core.getInput('catalog_directory');
+        core.info(`Catalog directory: ${catalogDirectory}`);
         const task = core.getInput('task');
+        core.info(`Task to execute: ${task}`);
         if (!tasks_1.VALID_TASKS.includes(task)) {
             core.setFailed(`Invalid input for \`task\`. Must be one of: ${tasks_1.VALID_TASKS.join(', ')}.`);
             return;
