@@ -20,8 +20,9 @@ async function run(): Promise<void> {
       return;
     }
 
+    core.info(`Starting task: ${task}`);
     const changedFilesForCatalog = await getChangedFilesInCatalogDirectory(octokit, context, catalogDirectory || undefined);
-
+    core.info(`Changed files in catalog directory: ${changedFilesForCatalog.join(', ')}`);
     if (changedFilesForCatalog.length === 0) {
       core.info('No catalog files have changes, skipping all tasks in action.');
       return;
