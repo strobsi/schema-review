@@ -19,16 +19,22 @@ interface TaskParams {
 
 export const task = async ({ octokit, context, catalogDirectory }: TaskParams) => {
   const failureThresholdInput = core.getInput('failure_threshold');
+  core.info(`failureThresholdInput: ${failureThresholdInput}`);
   const failureThreshold = parseInt(failureThresholdInput, 10);
   const CATALOG_PATH = path.join(process.cwd(), catalogDirectory);
-
+  core.info(`Catalog directory: ${catalogDirectory}`);
   const owner = context.repo.owner;
+  core.info(`Repository owner: ${owner}`);
   const repo = context.repo.repo;
+  core.info(`Repository: ${owner}/${repo}`);
   const pullRequestNumber = context.payload.pull_request!.number;
+  core.info(`Pull request number: ${pullRequestNumber}`);
   const model = core.getInput('model');
+  core.info(`Model: ${model}`);
   const provider = core.getInput('provider');
+  core.info(`Provider: ${provider}`);
   const catalogFolderName = core.getInput('catalog_directory');
-
+  core.info(`Catalog folder name: ${catalogFolderName}`);
   const { getMessageBySchemaPath, getProducersAndConsumersForMessage } = utils(CATALOG_PATH);
 
   core.info(`Catalog path: ${CATALOG_PATH}`);

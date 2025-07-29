@@ -64072,14 +64072,22 @@ const github_comment_1 = __nccwpck_require__(3760);
 const COMMENT_MARKER = '<!-- eventcatalog-schema-review-comment -->';
 const task = async ({ octokit, context, catalogDirectory }) => {
     const failureThresholdInput = core.getInput('failure_threshold');
+    core.info(`failureThresholdInput: ${failureThresholdInput}`);
     const failureThreshold = parseInt(failureThresholdInput, 10);
     const CATALOG_PATH = path_1.default.join(process.cwd(), catalogDirectory);
+    core.info(`Catalog directory: ${catalogDirectory}`);
     const owner = context.repo.owner;
+    core.info(`Repository owner: ${owner}`);
     const repo = context.repo.repo;
+    core.info(`Repository: ${owner}/${repo}`);
     const pullRequestNumber = context.payload.pull_request.number;
+    core.info(`Pull request number: ${pullRequestNumber}`);
     const model = core.getInput('model');
+    core.info(`Model: ${model}`);
     const provider = core.getInput('provider');
+    core.info(`Provider: ${provider}`);
     const catalogFolderName = core.getInput('catalog_directory');
+    core.info(`Catalog folder name: ${catalogFolderName}`);
     const { getMessageBySchemaPath, getProducersAndConsumersForMessage } = (0, sdk_1.default)(CATALOG_PATH);
     core.info(`Catalog path: ${CATALOG_PATH}`);
     if (isNaN(failureThreshold) || failureThreshold < 0 || failureThreshold > 100) {
